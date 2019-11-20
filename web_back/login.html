@@ -72,7 +72,15 @@
                 $('#myModal').modal('show')
             }
             //发请求获取数据
-            user.login(myname, mypassword)
+            user.login(myname, mypassword, function(res) {
+                if (res.code === 200) {
+                    location.href = 'index.html'
+
+                } else {
+                    $('#msgInfo').text('不能为空')
+                    $('#myModal').modal('show')
+                }
+            })
 
         })
     </script>
