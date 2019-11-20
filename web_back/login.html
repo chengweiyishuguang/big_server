@@ -55,6 +55,29 @@
 
     <script src='js/jquery-1.12.4.min.js'></script>
     <script src='js/bootstrap/js/bootstrap.min.js'></script>
+    <script>
+        var user = {
+            login: function(myname, mypassword) {
+                $.post('http://localhost:8000/admin/login', {
+                        user_name: myname,
+                        password: mypassword,
+                    },
+                    function(res) {
+                        // console.log(res);
+                        if (res.code === 200) {
+                            location.href = 'index.html'
+
+                        } else {
+                            $('#msgInfo').text('不能为空')
+                            $('#myModal').modal('show')
+                        }
+                    }
+                )
+
+            }
+        }
+    </script>
+
 
     <script>
         //点击sub 的时候获取用户名和密码
@@ -70,21 +93,8 @@
                 $('#myModal').modal('show')
             }
             //发请求获取数据
-            $.post('http://localhost:8000/admin/login', {
-                    user_name: myname,
-                    password: mypassword,
-                },
-                function(res) {
-                    // console.log(res);
-                    if (res.code === 200) {
-                        location.href = 'index.html'
+            user.login(myname, mypassword)
 
-                    } else {
-                        $('#msgInfo').text('不能为空')
-                        $('#myModal').modal('show')
-                    }
-                }
-            )
         })
     </script>
 </body>
