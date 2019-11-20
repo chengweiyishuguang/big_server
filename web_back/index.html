@@ -105,21 +105,7 @@
             }
         }
     </script>
-    <script>
-        var user = {
-            loginOut: function() {
-                $.post('http://localhost:8000/admin/logout', function(res) {
-                    // console.log(res);
-                    if (res.code === 200) {
-                        window.location.href = 'login.html'
-                    }
-
-
-                })
-
-            }
-        }
-    </script>
+    <script src="js/untlis/user.js"></script>
 
     <script>
         //获取信息添加点击事件
