@@ -17,8 +17,8 @@
     <div class="sider">
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
-            <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <img id="userImg" src="images/2.jpg" alt="person">
+            <span>欢迎&nbsp;&nbsp; <i id="userName">李思思</i></span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -106,9 +106,12 @@
         }
     </script>
     <script src="js/untlis/user.js"></script>
+    <script>
+        user.logininfo()
+    </script>
 
     <script>
-        //获取信息添加点击事件
+        //退出登录
         $("#btn").click(function() {
             //发送请求
             user.loginOut();

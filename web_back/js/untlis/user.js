@@ -28,5 +28,18 @@ var user = {
 
         })
 
+    },
+    logininfo: function() {
+        $.get(basrUrl + '/admin/getuser', function(res) {
+            // console.log(res);
+            if (res.code === 200) {
+                $("#userImg").prop('src', res.data.user_pic);
+                $("#userName").text(res.data.nickname);
+            }
+
+            // var myname=$("#userImg").val
+
+
+        })
     }
 }
