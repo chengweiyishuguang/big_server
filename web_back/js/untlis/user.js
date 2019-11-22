@@ -1,31 +1,23 @@
-var basrUrl = 'http://localhost:8000'
+var baseURL = 'http://localhost:8000'
 var user = {
-    login: function(myname, mypassword, callback) {
-        $.post(basrUrl + '/admin/login', {
-                user_name: myname,
-                password: mypassword,
+    loginIn: function(myName, mypassword, callback) {
+        $.post(baseURL + '/admin/login', {
+                user_name: myName,
+                password: mypassword
             },
             function(res) {
-                // console.log(res);
                 callback(res)
-            }
-        )
-
+            })
     },
+
     loginOut: function(callback) {
-        $.post(basrUrl + '/admin/logout', function(res) {
-            // console.log(res);
+        $.post(baseURL + '/admin/logout', function(res) {
             callback(res)
-
-
-
         })
-
     },
     logininfo: function(callback) {
-        $.get(basrUrl + '/admin/getuser', function(res) {
+        $.get(baseURL + '/admin/getuser', function(res) {
             callback(res)
-
         })
     }
 }
