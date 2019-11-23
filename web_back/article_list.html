@@ -53,12 +53,12 @@
                         <th class="text-center" width="100">操作</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="article_Container">
 
 
 
                     <tr>
-                        
+
                         <td>王积千造统最头</td>
                         <td>杰克</td>
                         <td>奇趣事</td>
@@ -70,14 +70,14 @@
 
                         <td class="text-center">
                             <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 1005 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:;" class="btn btn-danger btn-xs">删除</a>
                         </td>
                     </tr>
 
 
 
                     <tr>
-                     
+
                         <td>级电使正回</td>
                         <td>肉丝</td>
                         <td>爱旅行</td>
@@ -96,7 +96,7 @@
 
 
                     <tr>
-                       
+
                         <td>近难领管年算</td>
                         <td>杰克</td>
                         <td>会生活</td>
@@ -115,7 +115,7 @@
 
 
                     <tr>
-                       
+
                         <td>龙大实究</td>
                         <td>杰克</td>
                         <td>未分类</td>
@@ -134,7 +134,7 @@
 
 
                     <tr>
-                      
+
                         <td>算性得走来拉</td>
                         <td>肉丝</td>
                         <td>奇趣事</td>
@@ -153,7 +153,7 @@
 
 
                     <tr>
-                      
+
                         <td>几平会出气</td>
                         <td>管理员</td>
                         <td>奇趣事</td>
@@ -172,7 +172,7 @@
 
 
                     <tr>
-                      
+
                         <td>世团先证型角</td>
                         <td>杰克</td>
                         <td>奇趣事</td>
@@ -191,7 +191,7 @@
 
 
                     <tr>
-                      
+
                         <td>构更反步五</td>
                         <td>肉丝</td>
                         <td>奇趣事</td>
@@ -210,7 +210,7 @@
 
 
                     <tr>
-                       
+
                         <td>组方些</td>
                         <td>肉丝</td>
                         <td>会生活</td>
@@ -229,7 +229,7 @@
 
 
                     <tr>
-                      
+
                         <td>日做发光成</td>
                         <td>管理员</td>
                         <td>爱旅行</td>
@@ -250,31 +250,92 @@
             </table>
 
             <div class="row text-center">
-            <ul class="pagination pagination-sm">
-                <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
-                <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
-                <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                <li class="page-item"><a href="#" class="page-link">2</a></li>
-                <li class="page-item"><a href="#" class="page-link">3</a></li>
-                <li class="page-item"><a href="#" class="page-link">4</a></li>
-                <li class="page-item"><a href="#" class="page-link">5</a></li>
-                <li class="page-item"><a href="#" class="page-link">6</a></li>
-                <li class="page-item"><a href="#" class="page-link">7</a></li>
-                <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
-                <li class="page-item last"><a href="#" class="page-link">尾页</a></li>
-            </ul>
-        </div>
+                <ul class="pagination pagination-sm">
+                    <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
+                    <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">6</a></li>
+                    <li class="page-item"><a href="#" class="page-link">7</a></li>
+                    <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
+                    <li class="page-item last"><a href="#" class="page-link">尾页</a></li>
+                </ul>
+            </div>
 
         </div>
     </div>
 
     <script>
         // 设置左侧菜单
-        $('#release_btn').click(function(){
-            window.parent.setMenu(1,1);
+        $('#release_btn').click(function() {
+            window.parent.setMenu(1, 1);
+        })
+    </script>
+    <script src="js/untlis/config.js"></script>
+    <script src="js/untlis/article.js"></script>
+    <script src="js/template-web.js"></script>
+    <script id="temp_code" type="text/html">
+        {{each data item}}
+        <tr>
+
+            <td>{{item.title}}</td>
+            <td>{{item.author}}</td>
+            <td>{{item.type}}</td>
+            <td class="text-center">{{item.date}}</td>
+
+
+            <td class="text-center">{{item.state}}</td>
+
+
+            <td class="text-center">
+                <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
+                <a href="javascript:;" data_id="{{item.id}}" class="btn btn-danger btn-xs btn">删除</a>
+            </td>
+        </tr>
+
+        {{/each}}
+    </script>
+    <script>
+        getAndShow()
+
+        function getAndShow() {
+            //获取信息页面展示
+            article.show(function(res) {
+                // console.log(res);
+                var strhtml = template('temp_code', res)
+                    // console.log(srthtml);
+                $('#article_Container').html(strhtml);
+            })
+        }
+        //删除信息
+        //因为是动态添加的信息所以找该元素所以需要事件委托找元素的父元素，注册点击事件
+        $('#article_Container').on('click', '.btn', function() {
+            //因为数据删除所以确认问其是不是确定要删除
+            //当等于false的时候是不删除直接return出来
+            //当等于true时候是删除执行就可以
+
+
+            if (window.confirm('您确认要删除') === false) {
+                return
+            }
+            // console.log(this);
+            //因为删除需要id信息所以要获取当前的自定义属性的id信息
+            var id = $(this).attr('data_id');
+            console.log(id);
+            //发送请求删除数据
+            //调用article.del()方法
+            article.del(id, function(res) {
+                // console.log(res);
+                if (res.code === 200) {
+                    //当后端删除成功后的时候，重新刷新页面
+                    //页面会更新删除的信息就么有了
+                    getAndShow()
+                }
+            })
         })
     </script>
 
 </body>
-
-</html>

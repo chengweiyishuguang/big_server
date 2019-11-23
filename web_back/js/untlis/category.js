@@ -12,12 +12,17 @@
 //     }
 // }
 var baseURL = 'http://localhost:8000'
+
 var category = {
     show: function(callback) {
-        alert('测试数据')
-        $.get(baseURL + 'admin/category_search', function(res) {
-            callback(res)
 
+        $.get(APIURLS.category_show, function(res) {
+            callback(res)
+        })
+    },
+    del: function(id, callback) {
+        $.post(APIURLS.category_del, { id: id }, function(res) {
+            callback(res)
         })
     }
 }

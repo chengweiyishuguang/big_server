@@ -20,7 +20,7 @@
             文章类别管理
         </div>
         <div class="container-fluid common_con">
-            <table class="table table-striped table-bordered table-hover mp20 category_table">
+            <table class="table table-striped table-bordered table-hover mp20 category_table ">
                 <thead>
                     <tr>
                         <th>名称</th>
@@ -34,7 +34,7 @@
                         <td>uncategorized</td>
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});" class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs del">删除</a>
                         </td>
                     </tr>
 
@@ -43,7 +43,7 @@
                         <td>funny</td>
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;2&quot;,&quot;slug&quot;:&quot;funny&quot;,&quot;name&quot;:&quot;奇趣事&quot;});" class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 2 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:deleteTr( 2 );" class="btn btn-danger btn-xs del">删除</a>
                         </td>
                     </tr>
 
@@ -52,7 +52,7 @@
                         <td>living</td>
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;3&quot;,&quot;slug&quot;:&quot;living&quot;,&quot;name&quot;:&quot;会生活&quot;});" class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 3 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:deleteTr( 3 );" class="btn btn-danger btn-xs del">删除</a>
                         </td>
                     </tr>
 
@@ -121,6 +121,7 @@
             }
         })
     </script>
+    <script src="js/untlis/config.js"></script>
     <script src="js/template-web.js"></script>
     <script src="js/untlis/category.js"></script>
     <script id='temp' type='text/html'>
@@ -129,8 +130,8 @@
             <td>{{item.name}}</td>
             <td>{{item.slug}}</td>
             <td class="text-center">
-                <a href="javascript:editTr({&quot;id&quot;:&quot;4&quot;,&quot;slug&quot;:&quot;travel&quot;,&quot;name&quot;:&quot;爱旅行&quot;});" class="btn btn-info btn-xs">编辑</a>
-                <a href="javascript:deleteTr( 4 );" class="btn btn-danger btn-xs">删除</a>
+                <a href="javascript:;" name="{{item.name}}">编辑</a>
+                <a href="javascript:;" name="{{item.name}}" data_id="{{item.id}}" class="btn btn-danger btn-xs del">删除</a>
             </td>
         </tr>
         {{/each}}
@@ -143,22 +144,43 @@
         //与用户模块一样，我们可以创建一个新的模块，并在其中封装一个对象来实现类别模块的各个功能。
 
         //调用方法
-        category.show(function(res) {
-            console.log(res);
+        getAndshow()
 
+        function getAndshow() {
+            category.show(function(res) {
 
+                // console.log(res);
+                if (res.code === 200) {
+                    //把生成的模板模块添加到tbody里面
+                    //template是art-template提供的方法
+                    //给他数据和模板能得到html字符串加入到需要的地方
+                    //简要的说就是template()把数据转换城html结果
+                    var str = template('temp', res)
+                        // console.log(str);
+                        //获取tboady并添加
+                    $('#cateContainer').html(str)
+                }
+            })
+        }
+
+        //删除功能
+        //给tobody添加事件，事件委托
+        $("#cateContainer").on('click', '.del', function() {
+            if (window.confirm('你确定要删除吗') === false) {
+                return
+            }
+            //获取自定义属性
+            //给类名为del的a标签添加自定义属性，值为itemid
+            var id = $(this).attr('data_id');
+            // console.log(id);
+            category.del(id, function(res) {
+                console.log(res);
+                if (res.code === 200) {
+                    getAndshow()
+
+                }
+            })
         })
-
-        // if (res.code === 200) {
-        //     //把生成的模板模块添加到tbody里面
-        //     //template是art-template提供的方法
-        //     //给他数据和模板能得到html字符串加入到需要的地方
-        //     //简要的说就是template()把数据转换城html结果
-        //     var str = template('temp', res)
-        //         // console.log(str);
-        //         //获取tboady并添加
-        //     $('#cateContainer').html(str)
-        // }
     </script>
 
 </body>
