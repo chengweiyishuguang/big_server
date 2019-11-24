@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/jquery-1.12.4.min.js"></script>
+
 </head>
 
 <body>
@@ -30,11 +30,11 @@
                             <option>爱旅行</option>
                         </select>
                         <select id="selStatus" name="" class="form-control input-sm">
-                            <option>所有状态</option>
-                            <option value="drafted">草稿</option>
-                            <option value="published">已发布</option>
+                            <option value="">所有状态</option>
+                            <option value="草稿">草稿</option>
+                            <option value="已发布">已发布</option>
                         </select>
-                        <button id="btnSearch" class="btn btn-default btn-sm">筛选</button>
+                        <button type="button" id="btnSearch" class="btn btn-default btn-sm">筛选</button>
                     </form>
                 </div>
                 <div class="col-xs-6">
@@ -250,33 +250,27 @@
             </table>
 
             <div class="row text-center">
-                <ul class="pagination pagination-sm">
-                    <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
-                    <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">6</a></li>
-                    <li class="page-item"><a href="#" class="page-link">7</a></li>
-                    <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
-                    <li class="page-item last"><a href="#" class="page-link">尾页</a></li>
+                <ul id="pagination" class="pagination pagination-sm">
+
                 </ul>
             </div>
 
         </div>
     </div>
-
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/untlis/config.js"></script>
+    <script src="js/untlis/article.js"></script>
+    <script src="js/untlis/category.js"></script>
+    <script src="js/template-web.js"></script>
+    <script src="js/jquery.twbsPagination.js"></script>
     <script>
-        // 设置左侧菜单
+        //设置左侧菜单
         $('#release_btn').click(function() {
             window.parent.setMenu(1, 1);
         })
     </script>
-    <script src="js/untlis/config.js"></script>
-    <script src="js/untlis/article.js"></script>
-    <script src="js/template-web.js"></script>
+
+
     <script id="temp_code" type="text/html">
         {{each data item}}
         <tr>
@@ -291,32 +285,83 @@
 
 
             <td class="text-center">
-                <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
+                <a href="article_edit.html" class=" btn-default btn-xs">编辑</a>
                 <a href="javascript:;" data_id="{{item.id}}" class="btn btn-danger btn-xs btn">删除</a>
             </td>
         </tr>
 
         {{/each}}
     </script>
+    <script id="temp_cate" type="text/html">
+        <option value="">所有分类</option>
+        {{each data item}}
+
+        <option value={{item.id}}>{{item.name}}</option>
+        {{/each}}
+    </script>
     <script>
+        category.show(function(res) {
+            // console.log(res);
+            var strhtml = template('temp_cate', res);
+            // console.log(strhtml);
+
+            $('#selCategory').html(strhtml)
+
+        })
+    </script>
+
+
+
+
+
+    <script>
+        var curpage = ''; //当前展示的第几页
+        var type = ''; //文章类型
+        var state = ''; //文章的状态
         getAndShow()
+
 
         function getAndShow() {
             //获取信息页面展示
-            article.show(function(res) {
+            article.show(curpage, type, state, function(res) {
                 // console.log(res);
                 var strhtml = template('temp_code', res)
                     // console.log(srthtml);
                 $('#article_Container').html(strhtml);
+
+                $('#pagination').twbsPagination({
+                    totalPages: 43,
+                    visiblePages: 7,
+                    first: '首页',
+                    prev: '上一页',
+                    next: '下一页',
+                    last: '尾页',
+                    onPageClick: function(even, page) {
+                        // console.log(event, page);
+                        curpage = page
+                        getAndShow()
+                    }
+                })
             })
         }
+
+
+
+
+
+
+
+
+
+
+
+
         //删除信息
         //因为是动态添加的信息所以找该元素所以需要事件委托找元素的父元素，注册点击事件
         $('#article_Container').on('click', '.btn', function() {
             //因为数据删除所以确认问其是不是确定要删除
             //当等于false的时候是不删除直接return出来
             //当等于true时候是删除执行就可以
-
 
             if (window.confirm('您确认要删除') === false) {
                 return
@@ -335,6 +380,18 @@
                     getAndShow()
                 }
             })
+        })
+
+        //文章筛选
+        $('#btnSearch').click(function() {
+            type = $('#selCategory').val()
+            state = $('#selStatus').val()
+            console.log(type, status);
+            //重新发请求
+            //调用方法
+            getAndShow()
+
+
         })
     </script>
 
