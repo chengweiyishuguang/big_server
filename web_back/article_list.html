@@ -318,6 +318,7 @@
         var curpage = ''; //当前展示的第几页
         var type = ''; //文章类型
         var state = ''; //文章的状态
+        var TotalPages = ''; //当前总页数
         getAndShow()
 
 
@@ -328,9 +329,23 @@
                 var strhtml = template('temp_code', res)
                     // console.log(srthtml);
                 $('#article_Container').html(strhtml);
+                //2实现分页
+                //如果前后两次查询的结果得到的总页数不同
+                //则需要destory()分页插件，再做初始化
+                if (TotalPages != res.totalPage) {
+                    console.log('前后两次查询结果总页数不同');
+                    console.log(res.totalPage);
+                    console.log(TotalPages);
+                    //由于插件对总页数的变化不敏感，所以如果总页数不同
+                    //先销毁，再创建
+
+
+                    $('#pagination').twbsPagination('destroy')
+                    TotalPages = res.totalPage
+                }
 
                 $('#pagination').twbsPagination({
-                    totalPages: 43,
+                    totalPages: res.totalPage, //总页数
                     visiblePages: 7,
                     first: '首页',
                     prev: '上一页',
