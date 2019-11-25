@@ -57,7 +57,7 @@
 
 
 
-                    <tr>
+                    <!-- <tr>
 
                         <td>王积千造统最头</td>
                         <td>杰克</td>
@@ -240,11 +240,11 @@
 
 
                         <td class="text-center">
-                            <a href="post-edit.html?id=995" class="btn btn-default btn-xs">编辑</a>
+                            <a href="post-edit.html?id=995?" class="btn btn-default btn-xs">编辑</a>
                             <a href="javascript:deleteTr( 995 );" class="btn btn-danger btn-xs">删除</a>
                         </td>
                     </tr>
-
+ -->
 
                 </tbody>
             </table>
@@ -257,8 +257,9 @@
 
         </div>
     </div>
-    <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/untlis/config.js"></script>
+    <script src="js/jquery-1.12.4.min.js"></script>
+
     <script src="js/untlis/article.js"></script>
     <script src="js/untlis/category.js"></script>
     <script src="js/template-web.js"></script>
@@ -285,8 +286,8 @@
 
 
             <td class="text-center">
-                <a href="article_edit.html" class=" btn-default btn-xs">编辑</a>
-                <a href="javascript:;" data_id="{{item.id}}" class="btn btn-danger btn-xs btn">删除</a>
+                <a href="article_edit.html?id={{item.id}}" class="btn btn-default btn-xs">编辑</a>
+                <a href="javascript:;" data_id="{{item.id}}" class="btn btn-danger btn-xs del">删除</a>
             </td>
         </tr>
 
@@ -373,7 +374,7 @@
 
         //删除信息
         //因为是动态添加的信息所以找该元素所以需要事件委托找元素的父元素，注册点击事件
-        $('#article_Container').on('click', '.btn', function() {
+        $('#article_Container').on('click', '.del', function() {
             //因为数据删除所以确认问其是不是确定要删除
             //当等于false的时候是不删除直接return出来
             //当等于true时候是删除执行就可以

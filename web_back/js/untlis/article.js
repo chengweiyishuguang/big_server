@@ -37,6 +37,20 @@ var article = {
 
             }
         })
+    },
+    //获取文章的详细信息
+    getDetial: function(id, callback) {
+        // alert('测试接口')
+
+        $.get(APIURLS.article_show, {
+                id: id
+            },
+            function(res) {
+
+                callback(res)
+
+
+            })
     }
 
 }
