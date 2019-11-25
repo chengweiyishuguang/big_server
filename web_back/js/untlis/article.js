@@ -51,6 +51,21 @@ var article = {
 
 
             })
-    }
+    },
+    edit: function(fd, callback) {
+        $.ajax({
+            url: APIURLS.article_edit,
+            type: 'post',
+            data: fd,
+
+            processData: false, //不要让jquery去处理formDate信息
+            contentType: false, //不让jquery设置请求头它有自己的请求头
+
+            success: function(res) {
+                callback(res)
+
+            }
+        })
+    },
 
 }

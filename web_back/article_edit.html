@@ -20,18 +20,18 @@
             文章编辑
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form">
+            <form id="myform" class="form-horizontal article_form">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="article_title" value="文章标题文字">
+                        <input type="email" name="title" class="form-control" id="article_title" value="文章标题文字">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
                         <img src="images/pic06.jpg" class="article_cover" id="article_cover">
-                        <input type="file" id="exampleInputFile">
+                        <input type="file" name="cover" id="exampleInputFile">
                     </div>
                 </div>
                 <div class="form-group">
@@ -48,7 +48,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" value="2019-05-17" id="dateinput">
+                            <input type="text" class="form-control" name="date" value="2019-05-17" id="dateinput">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">修改</button>
+                        <button type="button" class="btn btn-success" id="btnsave">修改</button>
                     </div>
                 </div>
             </form>
@@ -92,13 +92,15 @@
         //loaction.search
         // alert(location.search)
         var id = location.search.substr(4)
-        alert(id);
+        console.log(id);
+
+        // alert(id);
 
 
 
         //2根据id去求接口获取对应文章的详情，获取成功后显示再表单元素中
         article.getDetial(id, function(res) {
-                console.log(res.data.title);
+                // console.log(res.data.title);
 
 
                 var typeId = res.data.type
@@ -113,16 +115,50 @@
                 category.show(function(res) {
                     // console.log(res);
                     //利用模板引擎渲染
-                    var htmlstr = template('temp', res);
-                    $('#categoryContanner').html(htmlstr)
-                        //让当前所文章所属时被选中状态
-                    $('#categoryContanner').val(typeId)
-
+                    if (res.code === 200) {
+                        var htmlstr = template('temp', res);
+                        $('#categoryContanner').html(htmlstr)
+                            //让当前所文章所属时被选中状态
+                        $('#categoryContanner').val(typeId)
+                    }
                 })
+
             })
-            //3用户修改保存
-            // category.show(function(res) {
-            //     console.log(res);
+            //设置保存功能，先在config里面添加一个接口
+            //在article.js添加一个方法
+        $('#btnsave').click(function() {
+
+
+
+            var fd = new FormData(document.getElementById('myform'))
+                // console.log(fd);
+                //追加一个参数
+            fd.append('id', id);
+            //set更新键值对
+            fd.set('content', tinyMCE.activeEditor.getContent())
+            console.log(fd.get('id'));
+
+
+            article.edit(fd, function(res) {
+                // console.log(res);
+                if (res.code === 200) {
+                    alert('发布成功')
+                } else {
+                    alert(res.msg)
+                }
+            })
+        })
+
+
+
+
+
+
+
+
+        //3用户修改保存
+        // category.show(function(res) {
+        //     console.log(res);
 
         // })
     </script>
