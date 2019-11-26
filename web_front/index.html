@@ -28,23 +28,18 @@
         <div class="menu">
             <div class="menu_collapse fl">
                 <a href="javascript:;" class="level_one"><i class="fa fa-list-ul"></i>全部分类</a>
-                <ul class="level_two">
+                <ul class="level_two" id="comment_list">
                     <li class="up"></li>
-                    <li><a href="#">最 新</a></li>
-                    <li><a href="#">科 技</a></li>
-                    <li><a href="#">股 市</a></li>
-                    <li><a href="#">商 品</a></li>
-                    <li><a href="#">外 汇</a></li>
-                    <li><a href="#">公 司</a></li>
+
                 </ul>
             </div>
-            <ul class="left_menu fl">
-                <li><a href="#">最 新</a></li>
+            <ul id="left_menu" class="left_menu fl">
+                <!-- <li><a href="#">最 新</a></li>
                 <li><a href="#">科 技</a></li>
                 <li><a href="#">股 市</a></li>
                 <li><a href="#">商 品</a></li>
                 <li><a href="#">外 汇</a></li>
-                <li><a href="#">公 司</a></li>
+                <li><a href="#">公 司</a></li> -->
             </ul>
             <ul class="right_menu fr">
                 <li><a href="#">科技专题</a></li>
@@ -55,7 +50,7 @@
 
     <div class="main_con clearfix">
         <div class="left_con">
-            <ul class="focus_list">
+            <ul class="focus_list" id="foucsImg">
                 <li class="first">
                     <a href="#"><img src="images/pic01.jpg" alt=""></a>
                     <p>图片说明</p>
@@ -215,11 +210,73 @@
             <span>|</span>
             <a href="#">招聘人才</a>
             <span>|</span>
-            <a href="#">友情链接</a>		
+            <a href="#">友情链接</a>
         </div>
-        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司   All Rights Reserved</p>
-        <p>电话：0755-****888    粤ICP备*******8号</p>
+        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司 All Rights Reserved</p>
+        <p>电话：0755-****888 粤ICP备*******8号</p>
     </div>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/untlis/config.js"></script>
+    <script src="js/untlis/category.js"></script>
+    <script src="js/untlis/article.js"></script>
+
+    <script src="js/template-web.js"></script>
+
+
+
+
+    <script id="temp_cate" type="text/html">
+        {{each data item}}
+        <li><a href="#">{{item.name}}</a></li>
+        {{/each}}
+
+
+    </script>
+
+    <script id="temp_foucsList" type="text/html">
+        {{each data item index}}
+        <!-- 特殊情况如果下标==0就是第一张图给他加特别的类名 -->
+        {{if index==0}}
+        <li class="first">
+            <a href="article.html?id={{item.id}}"><img src="{{item.cover}}" alt="{{item.title}}"></a>
+            <p>{{item.title}}</p>
+        </li>
+        {{else}}
+        <li>
+            <a href="article.html?id={{item.id}}"><img src="{{item.cover}}" alt="{{item.title}}"></a>
+            <p>{{item.title}}</p>
+        </li>
+        {{/if}} {{/each}}
+
+
+    </script>
+
+    <script>
+        //更换导航栏信息
+        //先获取信息在添加
+        //在后台运用了获取信息的方法，所以直接调用就可以
+        category.show(function(res) {
+                console.log(res);
+                var strhtml = template('temp_cate', res)
+                console.log(strhtml);
+                $('#left_menu').html(strhtml)
+                $('#comment_list').html('<li class="up">< /li>' + strhtml)
+            })
+            //显示焦点图，并把最新添加的图片添加到主页图
+            //调用接口
+            //有类似接口直接复制修改一下
+            //用模板引擎来实现
+            //同时模板引擎的a标签默认跳转位置是article.html,添加id 下一个页面根据id识别
+        article.getFiveFocus(function(res) {
+                // console.log(res);
+                var strhtml = template('temp_foucsList', res);
+                $('#foucsImg').html(strhtml);
+
+
+            })
+            //设置评论区
+            //发请求获取数据
+    </script>
 
 </body>
 
